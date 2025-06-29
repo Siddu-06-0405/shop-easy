@@ -4,7 +4,9 @@ import Order from '../models/order.model.js';
 // Get all orders
 export const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find({}).populate('userId', 'name email');
+    const orders = await Order.find({})
+      .populate('userId', 'name email')
+      .populate('items.productId', 'title price');
     res.json(orders);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch orders' });
@@ -68,7 +70,9 @@ export const deleteOrder = async (req, res) => {
 export const getUserOrders = async (req, res) => {
   try {
     const userId = req.user.id;
-    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+    const orders = await Order.find({ userId })
+  .sort({ createdAt: -1 })
+  .populate("items.productId");
     res.status(200).json(orders);
   } catch (err) {
     console.error("Error fetching user orders:", err);

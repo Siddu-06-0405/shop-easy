@@ -13,11 +13,14 @@ import FAQ from './pages/FAQ';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Account from './pages/Account';
-import Admin from './pages/Admin';
+import Admin from './pages/Admin/Admin';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import NotFound from "./pages/NotFound";
 import { CartItem } from './types/Product';
+import AddProduct from './pages/Admin/AddProduct';
+import AllCustomers from './pages/Admin/AllCustomers';
+import AllOrders from './pages/Admin/AllOrders';
 
 const queryClient = new QueryClient();
 
@@ -26,11 +29,11 @@ const App = () => {
 
   const handleAddToCart = (newItem: CartItem) => {
     setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === newItem.id);
+      const existingItem = prevItems.find(item => item._id === newItem._id);
       
       if (existingItem) {
         return prevItems.map(item =>
-          item.id === newItem.id
+          item._id === newItem._id
             ? { ...item, quantity: item.quantity + newItem.quantity }
             : item
         );
@@ -48,13 +51,13 @@ const App = () => {
     
     setCartItems(prevItems =>
       prevItems.map(item =>
-        item.id === id ? { ...item, quantity } : item
+        item._id === id ? { ...item, quantity } : item
       )
     );
   };
 
   const handleRemoveItem = (id: string) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+    setCartItems(prevItems => prevItems.filter(item => item._id !== id));
   };
 
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -76,6 +79,9 @@ const App = () => {
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/account" element={<Account />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/add-product" element={<AddProduct />} />
+              <Route path="/admin/customers" element={<AllCustomers />} />
+              <Route path="/admin/orders" element={<AllOrders />} />
               <Route 
                 path="/product/:id" 
                 element={<ProductDetail onAddToCart={handleAddToCart} />} 

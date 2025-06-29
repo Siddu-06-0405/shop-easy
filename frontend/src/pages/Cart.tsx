@@ -37,7 +37,7 @@ const Cart = ({ cartItems, onUpdateQuantity, onRemoveItem }: CartProps) => {
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="divide-y divide-gray-200">
             {cartItems.map((item) => (
-              <div key={item.id} className="p-6 flex items-center space-x-4">
+              <div key={item._id} className="p-6 flex items-center space-x-4">
                 <img
                   src={item.imageURL}
                   alt={item.title}
@@ -58,7 +58,7 @@ const Cart = ({ cartItems, onUpdateQuantity, onRemoveItem }: CartProps) => {
                 
                 <div className="flex items-center space-x-3">
                   <button
-                    onClick={() => onUpdateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                    onClick={() => onUpdateQuantity(item._id, Math.max(1, item.quantity - 1))}
                     className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3 rounded transition-colors"
                   >
                     -
@@ -67,7 +67,7 @@ const Cart = ({ cartItems, onUpdateQuantity, onRemoveItem }: CartProps) => {
                     {item.quantity}
                   </span>
                   <button
-                    onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                    onClick={() => onUpdateQuantity(item._id, item.quantity + 1)}
                     className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3 rounded transition-colors"
                   >
                     +
@@ -79,7 +79,7 @@ const Cart = ({ cartItems, onUpdateQuantity, onRemoveItem }: CartProps) => {
                     ${(item.price * item.quantity).toFixed(2)}
                   </p>
                   <button
-                    onClick={() => onRemoveItem(item.id)}
+                    onClick={() => onRemoveItem(item._id)}
                     className="text-red-600 hover:text-red-800 text-sm mt-1 transition-colors"
                   >
                     Remove

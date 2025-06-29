@@ -13,6 +13,7 @@ import {
   Edit,
   Trash2
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Admin = () => {
   // Dummy data
@@ -280,18 +281,24 @@ const Admin = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button className="h-16 flex flex-col items-center justify-center">
-                <Package className="h-5 w-5 mb-1" />
-                Add New Product
-              </Button>
-              <Button variant="outline" className="h-16 flex flex-col items-center justify-center">
-                <Users className="h-5 w-5 mb-1" />
-                View All Customers
-              </Button>
-              <Button variant="outline" className="h-16 flex flex-col items-center justify-center">
-                <ShoppingBag className="h-5 w-5 mb-1" />
-                View All Orders
-              </Button>
+              <Link to="/admin/add-product">
+                <Button className="h-16 flex flex-col items-center justify-center w-full">
+                  <Package className="h-5 w-5 mb-1" />
+                  Add New Product
+                </Button>
+              </Link>
+              <Link to="/admin/customers">
+                <Button variant="outline" className="h-16 flex flex-col items-center justify-center w-full">
+                  <Users className="h-5 w-5 mb-1" />
+                  View All Customers
+                </Button>
+              </Link>
+              <Link to="/admin/orders">
+                <Button variant="outline" className="h-16 flex flex-col items-center justify-center w-full">
+                  <ShoppingBag className="h-5 w-5 mb-1" />
+                  View All Orders
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

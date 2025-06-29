@@ -22,14 +22,18 @@ export const getOrderById = async (req, res) => {
   }
 };
 
-// Create a new order
-export const createOrder = async (req, res) => {
+export const placeOrder = async (req, res) => {
   try {
-    const newOrder = new Order(req.body);
+    const newOrder = new Order({
+      userId: req.user._id,
+      ...req.body,
+    });
+
     await newOrder.save();
-    res.status(201).json(newOrder);
-  } catch (error) {
-    res.status(400).json({ error: 'Failed to create order' });
+    res.status(201).json({ success: true, message: "Order placed." });
+  } catch (err) {
+    console.error("Order error:", err);
+    res.status(500).json({ success: false, message: "Failed to place order." });
   }
 };
 
@@ -57,5 +61,17 @@ export const deleteOrder = async (req, res) => {
     res.json({ message: 'Order deleted' });
   } catch (error) {
     res.status(400).json({ error: 'Failed to delete order' });
+  }
+};
+
+// Get orders of logged-in user
+export const getUserOrders = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+    res.status(200).json(orders);
+  } catch (err) {
+    console.error("Error fetching user orders:", err);
+    res.status(500).json({ message: "Failed to fetch user orders" });
   }
 };

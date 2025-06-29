@@ -25,6 +25,11 @@ const orderSchema = new mongoose.Schema({
     enum: ["Pending", "Paid", "Failed"],
     default: "Pending",
   },
+  status: {
+    type: String,
+    enum: ["Pending", "Processing", "Shipped", "Completed"],
+    default: "Pending",
+  },
   totalAmount: Number,
   placedAt: {
     type: Date,

@@ -28,6 +28,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const queryClient = new QueryClient();
 
@@ -94,7 +95,7 @@ const App = () => {
                 <Route path="/account/orders" element={<OrderHistory />} />
                 <Route path="/account/wishlist" element={<Wishlist />} />
                 <Route path="/account/addresses" element={<Addresses />} />
-
+                <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route
                   path="/product/:id"
                   element={<ProductDetail onAddToCart={handleAddToCart} />}
@@ -104,9 +105,6 @@ const App = () => {
                   element={
                     <ProtectedRoute>
                       <Cart
-                        cartItems={cartItems}
-                        onUpdateQuantity={handleUpdateQuantity}
-                        onRemoveItem={handleRemoveItem}
                       />
                     </ProtectedRoute>
                   }

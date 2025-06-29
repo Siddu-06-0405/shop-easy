@@ -7,6 +7,8 @@ import cartRoutes from "./routes/cart.routes.js";
 import Razorpay from "razorpay";
 import authRoutes from './routes/auth.routes.js';
 import wishlistRoutes from './routes/wishlist.routes.js';
+import paymentRoutes from './routes/payment.routes.js';
+import orderRoutes from './routes/order.routes.js';
 
 dotenv.config();
 connectDB();
@@ -14,12 +16,16 @@ connectDB();
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); 
 
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes); 
 app.use("/api/auth", authRoutes); 
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/payment', paymentRoutes);
+app.use('/api/orders', orderRoutes);
 
 app.get("/api/getkey", (req, res) => {
   res.status(200).json({

@@ -3,10 +3,12 @@ import express from 'express';
 import {
   getAllOrders,
   getOrderById,
-  createOrder,
   updateOrderStatus,
-  deleteOrder
+  deleteOrder,
+  placeOrder,
+  getUserOrders
 } from '../controllers/order.controller.js';
+import protectRoute from '../middleware/protectRoute.js';
 
 const router = express.Router();
 
@@ -16,13 +18,11 @@ router.get('/', getAllOrders);
 // Get single order by ID
 router.get('/:id', getOrderById);
 
-// Create a new order
-router.post('/', createOrder);
-
 // Update order status
 router.put('/:id/status', updateOrderStatus);
 
 // Delete order (for cleanup)
 router.delete('/:id', deleteOrder);
-
+router.post("/", protectRoute, placeOrder);
+router.get('/user/:id', protectRoute, getUserOrders);
 export default router;

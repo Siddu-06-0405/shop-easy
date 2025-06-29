@@ -52,11 +52,25 @@ const ProductDetail = ({ onAddToCart }: ProductDetailProps) => {
     }
   }, [id]);
 
-  const handleAddToCart = () => {
-    if (!product) return;
-    onAddToCart({ ...product, quantity });
+  const handleAddToCart = async () => {
+  if (!product || !authUser?.token) return;
+
+  try {
+    await API.post("/cart/add", {
+      productId: product._id,
+      quantity,
+    }, {
+      headers: {
+        Authorization: `Bearer ${authUser.token}`,
+      },
+    });
+
     alert(`Added ${quantity} ${product.title}(s) to cart!`);
-  };
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+  }
+};
+
 
   if (loading) {
     return (

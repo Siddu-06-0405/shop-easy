@@ -33,7 +33,7 @@ const OrderHistory = () => {
             <li key={order._id} className="border p-4 rounded">
               <p><strong>Order ID:</strong> {order.orderId}</p>
               <p><strong>Status:</strong> {order.status}</p>
-              <p><strong>Total:</strong> ${order.total.toFixed(2)}</p>
+              <p><strong>Total:</strong> ${order.totalAmount?.toFixed(2)}</p>
               <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
             </li>
           ))}

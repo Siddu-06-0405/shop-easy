@@ -12,6 +12,10 @@ import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Account from "./pages/Account";
+import ProfileInfo from "./pages/ProfileInfo";
+import OrderHistory from "./pages/OrderHistory";
+import Wishlist from "./pages/Wishlist";
+import Addresses from "./pages/Addresses";
 import Admin from "./pages/Admin/Admin";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
@@ -86,6 +90,11 @@ const App = () => {
                 <Route path="/admin/orders" element={<AllOrders />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/account/profile" element={<ProfileInfo />} />
+                <Route path="/account/orders" element={<OrderHistory />} />
+                <Route path="/account/wishlist" element={<Wishlist />} />
+                <Route path="/account/addresses" element={<Addresses />} />
+
                 <Route
                   path="/product/:id"
                   element={<ProductDetail onAddToCart={handleAddToCart} />}

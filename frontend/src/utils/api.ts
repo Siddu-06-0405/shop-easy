@@ -5,3 +5,23 @@ const API = axios.create({
 });
 
 export default API;
+const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+const token = authUser?.token;
+
+export const getWishlist = () =>
+  API.get('/wishlist', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+export const addToWishlist = (productId: string) =>
+  API.post(
+    '/wishlist',
+    { productId },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+
+export const removeFromWishlist = (productId: string) =>
+  API.delete(`/wishlist/${productId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+

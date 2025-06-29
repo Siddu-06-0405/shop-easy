@@ -1,26 +1,56 @@
-import React from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import {
   User,
   Package,
   Heart,
   Settings,
   CreditCard,
-  MapPin
-} from 'lucide-react';
+  MapPin,
+} from "lucide-react";
 
 const Account = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
   const menuItems = [
-    { icon: User, title: 'Profile Information', description: 'Update your personal details' },
-    { icon: Package, title: 'Order History', description: 'View your past orders and tracking' },
-    { icon: Heart, title: 'Wishlist', description: 'Save items for later' },
-    { icon: CreditCard, title: 'Payment Methods', description: 'Manage your payment options' },
-    { icon: MapPin, title: 'Addresses', description: 'Manage shipping and billing addresses' },
-    { icon: Settings, title: 'Account Settings', description: 'Privacy and notification preferences' }
+    {
+      icon: User,
+      title: "Profile Information",
+      description: "Update your personal details",
+      route: "/account/profile",
+    },
+    {
+      icon: Package,
+      title: "Order History",
+      description: "View your past orders and tracking",
+      route: "/account/orders",
+    },
+    {
+      icon: Heart,
+      title: "Wishlist",
+      description: "Save items for later",
+      route: "/account/wishlist",
+    },
+    {
+      icon: CreditCard,
+      title: "Payment Methods",
+      description: "Manage your payment options",
+      route: "/account/payments",
+    },
+    {
+      icon: MapPin,
+      title: "Addresses",
+      description: "Manage shipping and billing addresses",
+      route: "/account/addresses",
+    },
+    {
+      icon: Settings,
+      title: "Account Settings",
+      description: "Privacy and notification preferences",
+      route: "/account/settings",
+    },
   ];
 
   return (
@@ -29,26 +59,31 @@ const Account = () => {
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">My Account</h1>
           <p className="text-gray-600">
-            {user ? 'Manage your account settings and view your order history' : 'Sign in to unlock all features.'}
+            {user
+              ? "Manage your account settings and view your order history"
+              : "Sign in to unlock all features."}
           </p>
         </div>
 
         {/* Sign In Prompt */}
         {!user && (
           <div className="mt-12 bg-blue-50 rounded-lg p-8 text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Account Features</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              Account Features
+            </h3>
             <p className="text-gray-600 mb-6">
-              Create an account to track orders, save favorites, and enjoy a personalized shopping experience.
+              Create an account to track orders, save favorites, and enjoy a
+              personalized shopping experience.
             </p>
             <div className="space-x-4">
               <button
-                onClick={() => navigate('/login')}
+                onClick={() => navigate("/login")}
                 className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
               >
                 Sign In
               </button>
               <button
-                onClick={() => navigate('/signup')}
+                onClick={() => navigate("/signup")}
                 className="bg-white text-blue-600 border border-blue-600 px-8 py-3 rounded-lg hover:bg-blue-100 transition-colors font-semibold"
               >
                 Create Account
@@ -66,10 +101,12 @@ const Account = () => {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
-                {user ? `Welcome back, ${user.name?.split(' ')[0] || 'User'}!` : 'Welcome to ShopEasy!'}
+                {user
+                  ? `Welcome back, ${user.name?.split(" ")[0] || "User"}!`
+                  : "Welcome to ShopEasy!"}
               </h2>
               <p className="text-gray-600">
-                {user ? user.email : 'Sign in to access your account features'}
+                {user ? user.email : "Sign in to access your account features"}
               </p>
             </div>
           </div>
@@ -80,6 +117,7 @@ const Account = () => {
           {menuItems.map((item, index) => (
             <div
               key={index}
+              onClick={() => navigate(item.route)}
               className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
             >
               <div className="p-6">
@@ -87,7 +125,9 @@ const Account = () => {
                   <div className="bg-blue-100 p-3 rounded-lg mr-4">
                     <item.icon className="h-6 w-6 text-blue-600" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">{item.title}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {item.title}
+                  </h3>
                 </div>
                 <p className="text-gray-600">{item.description}</p>
               </div>

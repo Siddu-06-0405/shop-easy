@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import API from '../utils/api';
-import { Product, CartItem } from '../types/Product';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import API from "../utils/api";
+import { Product, CartItem } from "../types/Product";
+import { addToWishlist, removeFromWishlist, getWishlist } from "../utils/api";
 
 interface ProductDetailProps {
   onAddToCart: (item: CartItem) => void;
@@ -14,6 +15,9 @@ const ProductDetail = ({ onAddToCart }: ProductDetailProps) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const authUser = JSON.parse(localStorage.getItem("authUser") || "{}");
+  const [wishlist, setWishlist] = useState<string[]>([]);
+  const [isInWishlist, setIsInWishlist] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -21,7 +25,7 @@ const ProductDetail = ({ onAddToCart }: ProductDetailProps) => {
         const res = await API.get(`/products/${id}`);
         setProduct(res.data);
       } catch (err) {
-        console.error('Error fetching product:', err);
+        console.error("Error fetching product:", err);
         setProduct(null);
       } finally {
         setLoading(false);
@@ -29,6 +33,23 @@ const ProductDetail = ({ onAddToCart }: ProductDetailProps) => {
     };
 
     fetchProduct();
+
+    const fetchWishlist = async () => {
+      try {
+        const res = await getWishlist();
+        const productIds = res.data?.items?.map(
+          (item: any) => item.product._id
+        );
+        setWishlist(productIds || []);
+        setIsInWishlist(productIds?.includes(id));
+      } catch (err) {
+        console.error("Failed to fetch wishlist:", err);
+      }
+    };
+
+    if (authUser?.token) {
+      fetchWishlist();
+    }
   }, [id]);
 
   const handleAddToCart = () => {
@@ -49,9 +70,11 @@ const ProductDetail = ({ onAddToCart }: ProductDetailProps) => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Product Not Found
+          </h2>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Go Back Home
@@ -65,7 +88,7 @@ const ProductDetail = ({ onAddToCart }: ProductDetailProps) => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           className="flex items-center text-gray-600 hover:text-gray-900 mb-8 transition-colors"
         >
           <ArrowLeft size={20} className="mr-2" />
@@ -106,18 +129,18 @@ const ProductDetail = ({ onAddToCart }: ProductDetailProps) => {
               <div
                 className={`mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                   product.inStock
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-red-100 text-red-800'
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
                 }`}
               >
-                {product.inStock ? '✓ In Stock' : '✗ Out of Stock'}
+                {product.inStock ? "✓ In Stock" : "✗ Out of Stock"}
               </div>
 
               <div
                 className={`mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                  product.quantity>10
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-red-100 text-red-800'
+                  product.quantity > 10
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
                 }`}
               >
                 {product.quantity} pieces left
@@ -153,12 +176,34 @@ const ProductDetail = ({ onAddToCart }: ProductDetailProps) => {
                 disabled={!product.inStock}
                 className={`w-full py-3 px-6 rounded-lg font-semibold text-lg transition-colors ${
                   product.inStock
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
               >
-                {product.inStock ? 'Add to Cart' : 'Out of Stock'}
+                {product.inStock ? "Add to Cart" : "Out of Stock"}
               </button>
+              {authUser?.token && (
+                <button
+                  onClick={async () => {
+                    try {
+                      if (isInWishlist) {
+                        await removeFromWishlist(id);
+                        setIsInWishlist(false);
+                      } else {
+                        await addToWishlist(id);
+                        setIsInWishlist(true);
+                      }
+                    } catch (err) {
+                      console.error("Wishlist error:", err);
+                    }
+                  }}
+                  className="w-full mt-4 py-2 px-6 rounded-lg font-medium text-blue-600 border border-blue-600 hover:bg-blue-50 transition-colors"
+                >
+                  {isInWishlist
+                    ? "Remove from Wishlist ❤️"
+                    : "Add to Wishlist 🤍"}
+                </button>
+              )}
             </div>
           </div>
         </div>

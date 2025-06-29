@@ -6,6 +6,7 @@ import productRoutes from "./routes/product.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import Razorpay from "razorpay";
 import authRoutes from './routes/auth.routes.js';
+import wishlistRoutes from './routes/wishlist.routes.js';
 
 dotenv.config();
 connectDB();
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes); 
 app.use("/api/auth", authRoutes); 
+app.use('/api/wishlist', wishlistRoutes);
 
 app.get("/api/getkey", (req, res) => {
   res.status(200).json({

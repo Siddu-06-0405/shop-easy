@@ -256,7 +256,7 @@ const AllOrders = () => {
                 {filteredOrders.map((order) => (
                   <TableRow key={order._id}>
                     <TableCell>
-                      <div className="font-medium">{order._id}</div>
+                      <div className="font-medium">{order._id.slice(-8).toUpperCase()}</div>
                     </TableCell>
                     <TableCell>
                       <div>

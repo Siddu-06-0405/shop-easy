@@ -76,3 +76,13 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ error: "Failed to delete product" });
   }
 };
+
+export const getproductsCount = async (req, res) => {
+  try {
+    const totalProducts = await Product.countDocuments(); // Count all user documents
+    res.status(200).json({ totalProducts });
+  } catch (err) {
+    console.error("Error in getproductsCount controller:", err);
+    return res.status(500).json({ error: "Failed to get total users" });
+  }
+};

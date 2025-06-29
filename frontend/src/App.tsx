@@ -17,6 +17,7 @@ import OrderHistory from "./pages/OrderHistory";
 import Wishlist from "./pages/Wishlist";
 import Addresses from "./pages/Addresses";
 import Admin from "./pages/Admin/Admin";
+import EditProduct from "./pages/Admin/EditProduct";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
@@ -89,6 +90,7 @@ const App = () => {
                 <Route path="/admin/add-product" element={<AddProduct />} />
                 <Route path="/admin/customers" element={<AllCustomers />} />
                 <Route path="/admin/orders" element={<AllOrders />} />
+                <Route path="/admin/edit-product/:id" element={<EditProduct />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/account/profile" element={<ProfileInfo />} />

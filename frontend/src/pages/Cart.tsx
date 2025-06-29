@@ -156,7 +156,7 @@ const Cart = () => {
                   </h3>
                   <p className="text-gray-600 text-sm">{item.category}</p>
                   <p className="text-blue-600 font-bold text-lg mt-1">
-                    ${item.price.toFixed(2)}
+                    Rs.{item.price.toFixed(2)}
                   </p>
                 </div>
 
@@ -184,7 +184,7 @@ const Cart = () => {
 
                 <div className="text-right">
                   <p className="text-lg font-bold text-gray-900">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    Rs.{(item.price * item.quantity).toFixed(2)}
                   </p>
                   <button
                     onClick={() => handleRemoveItem(item._id)}
@@ -201,7 +201,7 @@ const Cart = () => {
             <div className="flex justify-between items-center mb-4">
               <span className="text-xl font-semibold text-gray-900">Total:</span>
               <span className="text-2xl font-bold text-blue-600">
-                ${totalPrice.toFixed(2)}
+                Rs.{totalPrice.toFixed(2)}
               </span>
             </div>
 

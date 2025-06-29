@@ -1,148 +1,111 @@
-
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { 
-  ShoppingBag, 
-  Users, 
-  Package, 
-  DollarSign, 
-  TrendingUp, 
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import {
+  ShoppingBag,
+  Users,
+  Package,
+  DollarSign,
+  TrendingUp,
   Eye,
   Edit,
-  Trash2
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
+  Trash2,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import API from "@/utils/api";
 
 const Admin = () => {
-  // Dummy data
+  const [users, setUsers] = useState(0);
+  const [productsCount, setProductsCount] = useState(0);
+  const [ordersCount, setOrdersCount] = useState(0);
+  const [revenue, setRevenue] = useState(0);
+  const [recentOrders, setRecentOrders] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const res = await API.get("/auth/total-users");
+      setUsers(res.data.totalUsers);
+
+      const res2 = await API.get("/products/total-products");
+      setProductsCount(res2.data.totalProducts);
+
+      const res3 = await API.get("/orders/o/total-orders");
+      setOrdersCount(res3.data.totalOrders);
+
+      const res4 = await API.get("/orders/o/total-revenue");
+      setRevenue(res4.data.totalRevenue);
+
+      const res5 = await API.get("/orders/o/recent-orders");
+      setRecentOrders(res5.data);
+
+      const productRes = await API.get("/products");
+      setProducts(productRes.data);
+      // console.log(productRes.data);
+    };
+
+    fetchStats();
+  }, []);
+
   const stats = [
     {
       title: "Total Revenue",
-      value: "$12,456",
+      value: revenue,
       change: "+12.5%",
       icon: DollarSign,
-      color: "text-green-600"
+      color: "text-green-600",
     },
     {
       title: "Orders",
-      value: "348",
+      value: ordersCount,
       change: "+8.2%",
       icon: ShoppingBag,
-      color: "text-blue-600"
+      color: "text-blue-600",
     },
     {
       title: "Customers",
-      value: "1,247",
+      value: users,
       change: "+15.3%",
       icon: Users,
-      color: "text-purple-600"
+      color: "text-purple-600",
     },
     {
       title: "Products",
-      value: "86",
+      value: productsCount,
       change: "+2.1%",
       icon: Package,
-      color: "text-orange-600"
-    }
+      color: "text-orange-600",
+    },
   ];
 
-  const recentOrders = [
-    {
-      id: "ORD-001",
-      customer: "John Doe",
-      email: "john@example.com",
-      total: "$89.99",
-      status: "Completed",
-      date: "2024-01-15"
-    },
-    {
-      id: "ORD-002",
-      customer: "Jane Smith",
-      email: "jane@example.com",
-      total: "$156.50",
-      status: "Processing",
-      date: "2024-01-14"
-    },
-    {
-      id: "ORD-003",
-      customer: "Mike Johnson",
-      email: "mike@example.com",
-      total: "$234.75",
-      status: "Shipped",
-      date: "2024-01-13"
-    },
-    {
-      id: "ORD-004",
-      customer: "Sarah Wilson",
-      email: "sarah@example.com",
-      total: "$67.25",
-      status: "Pending",
-      date: "2024-01-12"
-    },
-    {
-      id: "ORD-005",
-      customer: "Tom Brown",
-      email: "tom@example.com",
-      total: "$189.99",
-      status: "Completed",
-      date: "2024-01-11"
+  const handleDelete = async (id) => {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+    try {
+      await API.delete(`/products/${id}`);
+      setProducts(products.filter((p) => p._id !== id));
+    } catch (err) {
+      console.error("Delete error:", err);
     }
-  ];
+  };
 
-  const products = [
-    {
-      id: "PROD-001",
-      name: "Wireless Headphones",
-      category: "Electronics",
-      price: "$79.99",
-      stock: 45,
-      status: "Active"
-    },
-    {
-      id: "PROD-002",
-      name: "Smart Watch",
-      category: "Electronics",
-      price: "$199.99",
-      stock: 23,
-      status: "Active"
-    },
-    {
-      id: "PROD-003",
-      name: "Coffee Maker",
-      category: "Home & Kitchen",
-      price: "$89.99",
-      stock: 0,
-      status: "Out of Stock"
-    },
-    {
-      id: "PROD-004",
-      name: "Yoga Mat",
-      category: "Sports",
-      price: "$29.99",
-      stock: 67,
-      status: "Active"
-    }
-  ];
-
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'completed':
-        return 'text-green-600 bg-green-100';
-      case 'processing':
-        return 'text-blue-600 bg-blue-100';
-      case 'shipped':
-        return 'text-purple-600 bg-purple-100';
-      case 'pending':
-        return 'text-yellow-600 bg-yellow-100';
-      case 'active':
-        return 'text-green-600 bg-green-100';
-      case 'out of stock':
-        return 'text-red-600 bg-red-100';
-      default:
-        return 'text-gray-600 bg-gray-100';
-    }
+  const getStatusColor = (inStock: boolean | undefined) => {
+    if (inStock === true) return "text-green-600 bg-green-100";
+    if (inStock === false) return "text-red-600 bg-red-100";
+    return "text-gray-600 bg-gray-100"; // fallback for undefined/null
   };
 
   return (
@@ -165,11 +128,15 @@ const Admin = () => {
                 <stat.icon className={`h-5 w-5 ${stat.color}`} />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                <div className="text-2xl font-bold text-gray-900">
+                  {stat.value}
+                </div>
                 <div className="flex items-center mt-1">
                   <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
                   <span className="text-sm text-green-600">{stat.change}</span>
-                  <span className="text-sm text-gray-500 ml-1">from last month</span>
+                  <span className="text-sm text-gray-500 ml-1">
+                    from last month
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -191,29 +158,33 @@ const Admin = () => {
                     <TableHead>Customer</TableHead>
                     <TableHead>Total</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {recentOrders.map((order) => (
                     <TableRow key={order.id}>
-                      <TableCell className="font-medium">{order.id}</TableCell>
+                      <TableCell className="font-medium">
+                        {order.id.slice(-8).toUpperCase()}
+                      </TableCell>
                       <TableCell>
                         <div>
                           <div className="font-medium">{order.customer}</div>
-                          <div className="text-sm text-gray-500">{order.email}</div>
+                          <div className="text-sm text-gray-500">
+                            {order.email}
+                          </div>
                         </div>
                       </TableCell>
-                      <TableCell className="font-medium">{order.total}</TableCell>
+                      <TableCell className="font-medium">
+                        {order.total}
+                      </TableCell>
                       <TableCell>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                            order.status
+                          )}`}
+                        >
                           {order.status}
                         </span>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm">
-                          <Eye className="h-4 w-4" />
-                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -241,26 +212,40 @@ const Admin = () => {
                 </TableHeader>
                 <TableBody>
                   {products.map((product) => (
-                    <TableRow key={product.id}>
+                    <TableRow key={product._id}>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{product.name}</div>
-                          <div className="text-sm text-gray-500">{product.category}</div>
+                          <div className="font-medium">{product.title}</div>
+                          <div className="text-sm text-gray-500">
+                            {product.category}
+                          </div>
                         </div>
                       </TableCell>
-                      <TableCell className="font-medium">{product.price}</TableCell>
-                      <TableCell>{product.stock}</TableCell>
+                      <TableCell className="font-medium">
+                        ${product.price}
+                      </TableCell>
+                      <TableCell>{product.quantity}</TableCell>
                       <TableCell>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(product.status)}`}>
-                          {product.status}
+                        <span
+                          className={`whitespace-nowrap px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                            product.inStock
+                          )}`}
+                        >
+                          {product.inStock ? "In Stock" : "Out of Stock"}
                         </span>
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end space-x-1">
-                          <Button variant="ghost" size="sm">
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm">
+                          <Link to={`/admin/edit-product/${product._id}`}>
+                            <Button variant="ghost" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </Link>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDelete(product._id)}
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -282,19 +267,25 @@ const Admin = () => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Link to="/admin/add-product">
-                <Button className="h-16 flex flex-col items-center justify-center w-full">
+                <Button className="h-16 flex flex-col items-center justify-center w-full ">
                   <Package className="h-5 w-5 mb-1" />
                   Add New Product
                 </Button>
               </Link>
               <Link to="/admin/customers">
-                <Button variant="outline" className="h-16 flex flex-col items-center justify-center w-full">
+                <Button
+                  variant="outline"
+                  className="h-16 flex flex-col items-center justify-center w-full"
+                >
                   <Users className="h-5 w-5 mb-1" />
                   View All Customers
                 </Button>
               </Link>
               <Link to="/admin/orders">
-                <Button variant="outline" className="h-16 flex flex-col items-center justify-center w-full">
+                <Button
+                  variant="outline"
+                  className="h-16 flex flex-col items-center justify-center w-full"
+                >
                   <ShoppingBag className="h-5 w-5 mb-1" />
                   View All Orders
                 </Button>

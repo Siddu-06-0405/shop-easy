@@ -73,7 +73,8 @@ const Account = () => {
             </h3>
             <p className="text-gray-600 mb-6">
               Create an account to track orders, save favorites, and enjoy a
-              personalized shopping experience.
+              personalized shopping experience.<h4 className="text-2xl">Then, you will also get access to see admin dashboard also. </h4>
+              <strong>This is for Educational Purposes.</strong>
             </p>
             <div className="space-x-4">
               <button

@@ -53,24 +53,31 @@ const ProductDetail = ({ onAddToCart }: ProductDetailProps) => {
   }, [id]);
 
   const handleAddToCart = async () => {
-  if (!product || !authUser?.token) return;
+    if (!product) return navigate("/404");
 
-  try {
-    await API.post("/cart/add", {
-      productId: product._id,
-      quantity,
-    }, {
-      headers: {
-        Authorization: `Bearer ${authUser.token}`,
-      },
-    });
+    if (!authUser || !authUser.token) {
+      return navigate("/account");
+    }
 
-    alert(`Added ${quantity} ${product.title}(s) to cart!`);
-  } catch (error) {
-    console.error("Error adding to cart:", error);
-  }
-};
+    try {
+      await API.post(
+        "/cart/add",
+        {
+          productId: product._id,
+          quantity,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authUser.token}`,
+          },
+        }
+      );
 
+      alert(`Added ${quantity} ${product.title}(s) to cart!`);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
 
   if (loading) {
     return (

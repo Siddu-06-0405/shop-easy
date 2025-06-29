@@ -30,7 +30,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           
           <div className="flex items-center justify-between">
             <span className="text-2xl font-bold text-blue-600">
-              ${product.price.toFixed(2)}
+              Rs.{product.price.toFixed(2)}
             </span>
             
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${

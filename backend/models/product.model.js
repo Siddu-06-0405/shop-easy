@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema({
   imageURL: String,
   category: String,
   inStock: { type: Boolean, default: true },
+  quantity: { type: Number, required: true }
 });
 
 export default mongoose.model("Product", productSchema);

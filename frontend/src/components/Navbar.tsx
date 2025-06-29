@@ -1,7 +1,8 @@
-
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingCart, Home, Menu, X, User, Settings } from 'lucide-react';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { ShoppingCart, Home, Menu, X, User, Settings } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import LogoutButton from "./LogoutButton"; // optional separate component
 
 interface NavbarProps {
   cartItemCount: number;
@@ -9,6 +10,8 @@ interface NavbarProps {
 
 const Navbar = ({ cartItemCount }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { user, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -19,8 +22,6 @@ const Navbar = ({ cartItemCount }: NavbarProps) => {
     { to: "/about", label: "About" },
     { to: "/contact", label: "Contact" },
     { to: "/faq", label: "FAQ" },
-    { to: "/account", label: "Account", icon: User },
-    { to: "/admin", label: "Admin", icon: Settings }
   ];
 
   return (
@@ -30,11 +31,11 @@ const Navbar = ({ cartItemCount }: NavbarProps) => {
           <Link to="/" className="flex items-center space-x-2">
             <div className="text-2xl font-bold text-blue-600">ShopEasy</div>
           </Link>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
-              <Link 
+              <Link
                 key={link.to}
                 to={link.to}
                 className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors duration-200"
@@ -43,9 +44,39 @@ const Navbar = ({ cartItemCount }: NavbarProps) => {
                 <span>{link.label}</span>
               </Link>
             ))}
-            
-            <Link 
-              to="/cart" 
+            {user ? (
+              <>
+                <Link to="/account">
+                  <span className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                    Hi, {user.name.split(" ")[0]}
+                  </span>
+                </Link>
+                <button
+                  onClick={logout}
+                  className="text-red-600 hover:text-red-800 transition"
+                >
+                  Logout
+                </button>
+                <Link
+                  to="/admin"
+                  className="flex items-center space-x-1 text-gray-700 hover:text-blue-600"
+                >
+                  <Settings size={20} />
+                  <span>Admin</span>
+                </Link>
+              </>
+            ) : (
+              <Link
+                to="/account"
+                className="flex items-center space-x-1 text-gray-700 hover:text-blue-600"
+              >
+                <User size={20} />
+                <span>Account</span>
+              </Link>
+            )}
+
+            <Link
+              to="/cart"
               className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors duration-200 relative"
             >
               <ShoppingCart size={20} />
@@ -84,7 +115,43 @@ const Navbar = ({ cartItemCount }: NavbarProps) => {
                   <span>{link.label}</span>
                 </Link>
               ))}
-              
+              {user ? (
+                <>
+                  <Link to="/account">
+                    <div className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                      Hi, {user.name.split(" ")[0]}
+                    </div>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center space-x-2 px-3 py-2 text-red-600 hover:bg-red-50 rounded-md transition"
+                  >
+                    <X size={20} />
+                    <span>Logout</span>
+                  </button>
+                  <Link
+                    to="/admin"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition"
+                  >
+                    <Settings size={20} />
+                    <span>Admin</span>
+                  </Link>
+                </>
+              ) : (
+                <Link
+                  to="/account"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors"
+                >
+                  <User size={20} />
+                  <span>Account</span>
+                </Link>
+              )}
+
               <Link
                 to="/cart"
                 onClick={() => setIsMenuOpen(false)}

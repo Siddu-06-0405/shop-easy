@@ -34,9 +34,6 @@ const Home = () => {
             <p className="text-xl md:text-2xl text-blue-100 mb-8">
               Discover amazing products at unbeatable prices
             </p>
-            <div className="inline-flex items-center bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors duration-200">
-              Shop Now
-            </div>
           </div>
         </div>
       </div>

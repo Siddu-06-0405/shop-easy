@@ -13,7 +13,8 @@ const seedProducts = [
     price: 99.99,
     imageURL: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
     category: 'Electronics',
-    inStock: true
+    inStock: true,
+    quantity:21
   },
   {
     title: 'Smart Fitness Watch',
@@ -21,7 +22,8 @@ const seedProducts = [
     price: 249.99,
     imageURL: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500',
     category: 'Electronics',
-    inStock: true
+    inStock: true,
+    quantity:23
   },
   {
     title: 'Organic Cotton T-Shirt',
@@ -29,7 +31,8 @@ const seedProducts = [
     price: 29.99,
     imageURL: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500',
     category: 'Clothing',
-    inStock: true
+    inStock: true,
+    quantity:35
   },
   {
     title: 'Professional Camera Lens',
@@ -37,7 +40,8 @@ const seedProducts = [
     price: 399.99,
     imageURL: 'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=500',
     category: 'Photography',
-    inStock: false
+    inStock: false,
+    quantity:57
   },
   {
     title: 'Ergonomic Office Chair',
@@ -45,7 +49,8 @@ const seedProducts = [
     price: 299.99,
     imageURL: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500',
     category: 'Furniture',
-    inStock: true
+    inStock: true,
+    quantity:70
   },
   {
     title: 'Stainless Steel Water Bottle',
@@ -53,7 +58,8 @@ const seedProducts = [
     price: 24.99,
     imageURL: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500',
     category: 'Lifestyle',
-    inStock: true
+    inStock: true,
+    quantity:100
   },
   {
     title: 'Mechanical Gaming Keyboard',
@@ -61,7 +67,8 @@ const seedProducts = [
     price: 129.99,
     imageURL: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=500',
     category: 'Electronics',
-    inStock: true
+    inStock: true,
+    quantity:22
   },
   {
     title: 'Leather Crossbody Bag',
@@ -69,7 +76,8 @@ const seedProducts = [
     price: 79.99,
     imageURL: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500',
     category: 'Accessories',
-    inStock: true
+    inStock: true,
+    quantity:1
   }
 ];
 

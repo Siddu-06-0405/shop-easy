@@ -32,7 +32,7 @@ const About = () => {
       <div className="bg-blue-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">About ShopEasy</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">About ShopEasy(Dummy DATA)</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
               We're passionate about bringing you the best shopping experience with quality products at unbeatable prices.
             </p>
@@ -43,7 +43,7 @@ const About = () => {
       {/* Story Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story(Dummy DATA)</h2>
           <div className="prose prose-lg mx-auto text-gray-600">
             <p className="mb-6">
               Founded in 2020, ShopEasy began with a simple mission: to make online shopping easier, 

@@ -1,7 +1,9 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CartItem } from '../types/Product';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { initiateRazorpayPayment, loadRazorpayScript } from '../utils/razorpay';
 
 interface CartProps {
   cartItems: CartItem[];
@@ -10,7 +12,43 @@ interface CartProps {
 }
 
 const Cart = ({ cartItems, onUpdateQuantity, onRemoveItem }: CartProps) => {
+  const [isProcessing, setIsProcessing] = useState(false);
   const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  const handleCheckout = async () => {
+    setIsProcessing(true);
+    
+    try {
+      // Load Razorpay script
+      const isScriptLoaded = await loadRazorpayScript();
+      
+      if (!isScriptLoaded) {
+        toast.error('Failed to load payment gateway. Please try again.');
+        return;
+      }
+
+      // Initiate payment
+      initiateRazorpayPayment(
+        cartItems,
+        totalPrice,
+        (response) => {
+          // Payment successful
+          toast.success('Payment successful! Order placed successfully.');
+          console.log('Payment response:', response);
+          // Here you would typically clear the cart and redirect to success page
+        },
+        () => {
+          // Payment failed or cancelled
+          toast.error('Payment cancelled or failed. Please try again.');
+        }
+      );
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -104,9 +142,13 @@ const Cart = ({ cartItems, onUpdateQuantity, onRemoveItem }: CartProps) => {
               >
                 Continue Shopping
               </Link>
-              <button className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
-                Proceed to Checkout
-              </button>
+              <Button 
+                onClick={handleCheckout}
+                disabled={isProcessing}
+                className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold disabled:opacity-50"
+              >
+                {isProcessing ? 'Processing...' : 'Proceed to Checkout'}
+              </Button>
             </div>
           </div>
         </div>

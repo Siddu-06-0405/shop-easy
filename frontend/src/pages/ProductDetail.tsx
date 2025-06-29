@@ -113,6 +113,16 @@ const ProductDetail = ({ onAddToCart }: ProductDetailProps) => {
                 {product.inStock ? '✓ In Stock' : '✗ Out of Stock'}
               </div>
 
+              <div
+                className={`mb-6 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                  product.quantity>10
+                    ? 'bg-green-100 text-green-800'
+                    : 'bg-red-100 text-red-800'
+                }`}
+              >
+                {product.quantity} pieces left
+              </div>
+
               {product.inStock && (
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-2">

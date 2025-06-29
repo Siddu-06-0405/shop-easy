@@ -8,19 +8,21 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await API.get('/products');
-        setProducts(res.data);
-      } catch (err) {
-        console.error('Error fetching products:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchProducts = async () => {
+    try {
+      const res = await API.get('/products');
+      console.log("Fetched products from API:", res.data);
+      setProducts(res.data);
+    } catch (err) {
+      console.error('Error fetching products:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchProducts();
-  }, []);
+  fetchProducts();
+}, []);
+
 
   return (
     <div className="min-h-screen bg-gray-50">

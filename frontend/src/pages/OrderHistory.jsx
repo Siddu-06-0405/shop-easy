@@ -26,8 +26,8 @@ const OrderHistory = () => {
   }, [user]);
 
   const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.items.some(item => 
-      item.productId.title.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesSearch = order.items.some(item =>
+      item.productId?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     const matchesFilter = selectedFilter === 'all' || order.status.toLowerCase() === selectedFilter;
     return matchesSearch && matchesFilter;
@@ -115,8 +115,8 @@ const OrderHistory = () => {
               {orders.length === 0 ? "You haven't placed any orders yet" : "No orders match your search"}
             </h3>
             <p className="text-gray-600 mb-6">
-              {orders.length === 0 
-                ? "When you place your first order, it will appear here." 
+              {orders.length === 0
+                ? "When you place your first order, it will appear here."
                 : "Try adjusting your search or filter criteria."
               }
             </p>
